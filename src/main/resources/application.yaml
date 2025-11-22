@@ -4,17 +4,30 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/blog_db
-    username: postgres
-    password: password
+    url: ${PG_URL:jdbc:postgresql://localhost:5432/blog_db}
+    username: ${PG_USER:postgres}
+    password: ${PG_PASSWORD:password}
 
 
-    jpa:
-        hibernate:
-            ddl-auto: validate
+  jpa:
+      hibernate:
+          ddl-auto: validate
 
-        show-sql: true
+      show-sql: true
 
-        properties:
-            hibernate:
-              format_sql: true
+      properties:
+          hibernate:
+            format_sql: true
+
+  flyway:
+    enabled: true
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+
+
+application:
+  security:
+    jwt:
+      secret-key: ${JWT_SECRET_KEY:eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiYXMiLCJJc3N1ZXIiOiJhc2RmIiwiVXNlcm5hbWUiOiJhIiwiZXhwIjoxNzY1NDY5Mjc0LCJpYXQiOjE3NjI4NzcyNzR9.AbOYM2Uk4AIg2l0dPHZ7OgrRcs4KfDSttswPSHQRpC4 }
+      expiration: ${JWT_EXPIRES_IN:86400000}
