@@ -39,7 +39,7 @@ public class PostController {
         User user = (User) authentication.getPrincipal();
         Post post = postMapper.toEntity(request, user);
 
-        Post createdPost = postService.createPost(post);
+        Post createdPost = postService.createPost(post, request.categoryId());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(postMapper.toDto(createdPost));
 

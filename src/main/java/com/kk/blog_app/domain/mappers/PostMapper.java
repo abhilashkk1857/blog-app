@@ -29,6 +29,10 @@ public class PostMapper {
                         post.getAuthor().getId(),
                         post.getAuthor().getFirstName(),
                         post.getAuthor().getLastName()
+                ),
+                new PostResponse.CategoryDto(
+                        post.getCategory().getId(),
+                        post.getCategory().getName()
                 )
         );
     }

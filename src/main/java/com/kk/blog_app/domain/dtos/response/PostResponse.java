@@ -9,12 +9,18 @@ public record PostResponse(
         String content,
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
-        AuthorDto author
+        AuthorDto author,
+        CategoryDto category
 ) {
     public record AuthorDto(
             UUID id,
             String firstName,
             String lastName
-    ) {
-    }
+    ) {}
+
+    public record CategoryDto(
+            UUID id,
+            String name
+    ) {}
+
 }

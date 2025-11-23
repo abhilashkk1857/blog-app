@@ -11,6 +11,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -79,6 +80,26 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(PropertyReferenceException.class)
     public ResponseEntity<ApiErrorResponse> handlePropertyReferenceException(PropertyReferenceException exception) {
         ApiErrorResponse error = new ApiErrorResponse(HttpStatus.BAD_REQUEST, "Invalid sort property : " + exception.getPropertyName());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleCategoryNotFoundException(CategoryNotFoundException exception) {
+        ApiErrorResponse error = new ApiErrorResponse(HttpStatus.BAD_REQUEST, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ApiErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception) {
+        ApiErrorResponse error = new ApiErrorResponse(HttpStatus.BAD_REQUEST,
+                    String.format("The parameter '%s' of value '%s' could not be converted to type '%s'",
+                            exception.getName(),
+                            exception.getValue(),
+                            exception.getRequiredType().getSimpleName()
+                            )
+                );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 

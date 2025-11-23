@@ -1,10 +1,13 @@
 package com.kk.blog_app.service;
 
 import com.kk.blog_app.domain.dtos.request.UpdatePostRequest;
+import com.kk.blog_app.domain.entities.Category;
 import com.kk.blog_app.domain.entities.Post;
 import com.kk.blog_app.domain.entities.Role;
 import com.kk.blog_app.domain.entities.User;
+import com.kk.blog_app.exception.CategoryNotFoundException;
 import com.kk.blog_app.exception.PostNotFoundException;
+import com.kk.blog_app.repository.CategoryRepository;
 import com.kk.blog_app.repository.PostRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +24,7 @@ import java.util.UUID;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final CategoryRepository categoryRepository;
 
     public Page<Post> getAllPosts(Pageable pageable) {
         return postRepository.findAll(pageable);
@@ -33,7 +37,13 @@ public class PostService {
     }
 
 
-    public Post createPost(Post post) {
+    public Post createPost(Post post, UUID categoryId) {
+
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new CategoryNotFoundException("category not found with the id :" + categoryId));
+
+        post.setCategory(category);
+
         return postRepository.save(post);
     }
 
