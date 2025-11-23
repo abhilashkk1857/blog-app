@@ -10,6 +10,10 @@ import com.kk.blog_app.domain.mappers.PostMapper;
 import com.kk.blog_app.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -43,11 +47,23 @@ public class PostController {
 
 
     @GetMapping
-    public ResponseEntity<List<PostResponse>> getAllPosts() {
-        List<PostResponse> response = postService.getAllPosts()
-                .stream()
-                .map(postMapper::toDto)
-                .toList();
+    public ResponseEntity<Page<PostResponse>> getAllPosts(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "createdAt") String sortBy,
+        @RequestParam(defaultValue = "desc") String sortDir
+    ){
+
+        Sort.Direction direction = sortDir.equalsIgnoreCase("asc")
+                ? Sort.Direction.ASC
+                : Sort.Direction.DESC;
+
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        Page<Post> postPage = postService.getAllPosts(pageable);
+
+        Page<PostResponse> response = postPage.map(postMapper::toDto);
 
         return ResponseEntity.ok(response);
     }
