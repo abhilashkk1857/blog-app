@@ -16,7 +16,7 @@ import java.util.List;
 @Profile("dev")
 @Component
 @RequiredArgsConstructor
-public class DateSeeder implements CommandLineRunner {
+public class DataSeeder implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final PostRepository postRepository;
