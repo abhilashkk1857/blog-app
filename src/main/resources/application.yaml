@@ -34,3 +34,14 @@ application:
     jwt:
       secret-key: ${JWT_SECRET_KEY}
       expiration: ${JWT_EXPIRES_IN}
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics
+
+  endpoint:
+    health:
+      show-details: always
