@@ -21,11 +21,11 @@ public class Category {
     private UUID id;
 
     @Column(nullable = false, unique = true)
-    String name;
+    private String name;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     @Column(nullable = false)
-    List<Post> posts = new ArrayList<>();
+    private List<Post> posts = new ArrayList<>();
 
 
 }

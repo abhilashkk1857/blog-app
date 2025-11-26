@@ -1,6 +1,7 @@
 package com.kk.blog_app.exception;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 
+@Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -33,6 +35,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handleUserAlreadyExistsException(UserAlreadyExistsException exception) {
         ApiErrorResponse error = new ApiErrorResponse(HttpStatus.CONFLICT, exception.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ApiErrorResponse> handleAccessDeniedException(AccessDeniedException exception) {
+        ApiErrorResponse error = new ApiErrorResponse(HttpStatus.FORBIDDEN, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 
 
@@ -63,20 +72,6 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler(PostNotFoundException.class)
-    public ResponseEntity<ApiErrorResponse> handlePostNotFoundException (PostNotFoundException exception) {
-        ApiErrorResponse error = new ApiErrorResponse(HttpStatus.NOT_FOUND, exception.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-    }
-
-
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ApiErrorResponse> handleAccessDeniedException(AccessDeniedException exception) {
-        ApiErrorResponse error = new ApiErrorResponse(HttpStatus.UNAUTHORIZED, exception.getMessage());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
-    }
-
-
     @ExceptionHandler(PropertyReferenceException.class)
     public ResponseEntity<ApiErrorResponse> handlePropertyReferenceException(PropertyReferenceException exception) {
         ApiErrorResponse error = new ApiErrorResponse(HttpStatus.BAD_REQUEST, "Invalid sort property : " + exception.getPropertyName());
@@ -84,23 +79,30 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler(CategoryNotFoundException.class)
-    public ResponseEntity<ApiErrorResponse> handleCategoryNotFoundException(CategoryNotFoundException exception) {
-        ApiErrorResponse error = new ApiErrorResponse(HttpStatus.BAD_REQUEST, exception.getMessage());
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ApiErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception) {
+        ApiErrorResponse error = new ApiErrorResponse(HttpStatus.BAD_REQUEST,
+                String.format("The parameter '%s' of value '%s' could not be converted to type '%s'",
+                        exception.getName(),
+                        exception.getValue(),
+                        exception.getRequiredType().getSimpleName()
+                )
+        );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
 
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<ApiErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception) {
-        ApiErrorResponse error = new ApiErrorResponse(HttpStatus.BAD_REQUEST,
-                    String.format("The parameter '%s' of value '%s' could not be converted to type '%s'",
-                            exception.getName(),
-                            exception.getValue(),
-                            exception.getRequiredType().getSimpleName()
-                            )
-                );
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    @ExceptionHandler(PostNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handlePostNotFoundException (PostNotFoundException exception) {
+        ApiErrorResponse error = new ApiErrorResponse(HttpStatus.NOT_FOUND, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleCategoryNotFoundException(CategoryNotFoundException exception) {
+        ApiErrorResponse error = new ApiErrorResponse(HttpStatus.NOT_FOUND, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
 
@@ -108,6 +110,15 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handleCommentNotFoundException(CommentNotFoundException exception) {
         ApiErrorResponse error = new ApiErrorResponse(HttpStatus.NOT_FOUND, exception.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiErrorResponse> handleGenericExceptions(Exception exception) {
+        log.error("Unexpected error occurred : ", exception);
+        ApiErrorResponse errorResponse = new ApiErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error occurred");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+
     }
 
 }

@@ -7,9 +7,9 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${PG_URL:jdbc:postgresql://localhost:5432/blog_db}
-    username: ${PG_USER:postgres}
-    password: ${PG_PASSWORD:password}
+    url: ${PG_URL:}
+    username: ${PG_USER}
+    password: ${PG_PASSWORD}
 
 
   jpa:
@@ -32,5 +32,5 @@ spring:
 application:
   security:
     jwt:
-      secret-key: ${JWT_SECRET_KEY:eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiYXMiLCJJc3N1ZXIiOiJhc2RmIiwiVXNlcm5hbWUiOiJhIiwiZXhwIjoxNzY1NDY5Mjc0LCJpYXQiOjE3NjI4NzcyNzR9.AbOYM2Uk4AIg2l0dPHZ7OgrRcs4KfDSttswPSHQRpC4 }
-      expiration: ${JWT_EXPIRES_IN:86400000}
+      secret-key: ${JWT_SECRET_KEY}
+      expiration: ${JWT_EXPIRES_IN}

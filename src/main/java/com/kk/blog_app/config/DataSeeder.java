@@ -7,6 +7,7 @@ import com.kk.blog_app.repository.CategoryRepository;
 import com.kk.blog_app.repository.PostRepository;
 import com.kk.blog_app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ import java.util.List;
 @Profile("dev")
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class DataSeeder implements CommandLineRunner {
 
     private final UserRepository userRepository;
@@ -28,7 +30,7 @@ public class DataSeeder implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         if (postRepository.count() > 10) {
-            System.out.println("Posts already seeded! Skipped.........");
+            log.info("Posts already seeded! Skipped.........");
             return;
         }
 
@@ -37,7 +39,7 @@ public class DataSeeder implements CommandLineRunner {
                 .orElse(null);
 
         if(author == null) {
-            System.out.println("No users found in DB. Cannot seed posts. Register a user first!");
+            log.info("No users found in DB. Cannot seed posts. Register a user first!");
             return;
         }
 
@@ -47,12 +49,12 @@ public class DataSeeder implements CommandLineRunner {
                                 .orElse(null);
 
         if (generalCategory == null) {
-            System.out.println("General Category not found. Skipping seeding......");
+            log.info("General Category not found. Skipping seeding......");
             return;
         }
 
 
-        System.out.println("Seeding 50 dummy posts...");
+        log.info("Seeding 50 dummy posts...");
         List<Post> posts = new ArrayList<>();
 
         for (int i=1; i<=50; i++) {
@@ -69,7 +71,7 @@ public class DataSeeder implements CommandLineRunner {
 
 
         postRepository.saveAll(posts);
-        System.out.println("Success! 50 posts added to the database.");
+        log.info("Success! 50 posts added to the database.");
 
     }
 }
