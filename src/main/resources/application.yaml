@@ -2,8 +2,6 @@ spring:
   application:
     name: blog-app
 
-  profiles:
-    active: dev
 
   datasource:
     driver-class-name: org.postgresql.Driver
