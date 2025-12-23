@@ -43,8 +43,9 @@ public class Post {
 
     @PrePersist
     protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        LocalDateTime currentTime = LocalDateTime.now();
+        this.createdAt = currentTime;
+        this.updatedAt = currentTime;
     }
 
 

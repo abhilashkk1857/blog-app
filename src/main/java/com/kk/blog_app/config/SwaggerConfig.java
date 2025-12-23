@@ -16,9 +16,13 @@ public class SwaggerConfig {
     public OpenAPI customOpenApi() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Blog API")
+                        .title("Headless Publishing Engine")
                         .version("1.0")
-                        .description("A professional Blog REST API built with Spring Boot")
+                        .description("""
+                                ### Secure Blog Service
+                                
+                                A production-grade, secure, and scalable RESTful API built with Spring Boot. \
+                                Features include JWT Authentication, RBAC, and a decoupled architecture.""")
                 )
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components(new Components()

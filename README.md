@@ -1,27 +1,29 @@
 
-# 📝 Blog App
+# 🚀 Headless Publishing Engine
 
-A production-grade, secure, and scalable RESTful API for a Blogging Platform built with **Spring Boot 3** and **Java 21**.
+### 🛡️ Secure Blog Service
 
-This project demonstrates advanced backend concepts including **JWT Authentication**, **Role-Based Access Control (RBAC)**, **Database Migrations**, **Integration Testing with Testcontainers**, and **Cloud Deployment**.
+A production-grade, decoupled **Content Delivery API** designed for scalability and security. Built with **Spring Boot 3** and **Java 21**, this engine serves as a robust backend for any frontend client (Web, Mobile, or IoT). 
+
+This project demonstrates advanced **system architecture** concepts.It features **JWT Authentication**, **Role-Based Access Control (RBAC)**, **Database Migrations**, **Integration Testing with Testcontainers**, and **Cloud Deployment**.
 
 -----
 
 ## 🚀 Key Features
 
-* **🔐 Authentication & Security:**
+* **🔐 Enterprise-Grade Security:**
 
     * Secure **Sign Up** & **Sign In** using **JWT (JSON Web Tokens)**.
     * Password hashing with **BCrypt**.
     * **Role-Based Access Control (RBAC):** Distinction between `USER` and `ADMIN` roles.
     * **Ownership Logic:** Users can only update/delete their *own* posts/comments (unless Admin).
 
-* **📝 Content Management:**
+* **📡 Headless Content Delivery:**
 
-    * **Posts:** Create, Read (Pagination & Sorting), Update, Delete.
-    * **Categories:** Organize posts into categories.
+    * **Decoupled Architecture:** Serves raw JSON data to any consumer (React, Vue, Mobile).
+    * **Posts:** Flexible content modeling with pagination and sorting.
     * **Comments:** Engage with content (includes cascade deletion logic).
-
+    * **Categories:** Organize posts into categories.
 * **⚙️ Robust Architecture:**
 
     * **DTO Pattern:** Strict separation between Internal Entities and External API Contracts.
